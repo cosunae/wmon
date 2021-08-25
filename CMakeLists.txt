@@ -25,3 +25,4 @@ target_link_libraries(wmon_f PUBLIC wmon_c)
 
 add_executable(wmon_test_f wmon_test.F90)
 target_link_libraries(wmon_test_f wmon_f)
+install(TARGETS wmon_c wmon_f wmon)
