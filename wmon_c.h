@@ -7,3 +7,4 @@ extern "C" {
     void wmon_destroy(wmon* wm);
     size_t timestamp();
 }
+
