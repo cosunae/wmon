@@ -27,6 +27,8 @@ install(TARGETS wmon_f EXPORT wmonfTargets
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
 )
 
+install(FILES ${CMAKE_BINARY_DIR}/wmon.mod DESTINATION ${CMAKE_INSTALL_PREFIX}/include/wmon)
+
 #install(
 #  FILES
 #    ${CMAKE_CURRENT_BINARY_DIR}/wmonConfig.cmake
