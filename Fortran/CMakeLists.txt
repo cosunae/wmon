@@ -16,27 +16,9 @@ set(wmon_INCLUDE_DIRS "${restclient-cpp_DIR}/../../../include")
 add_library(wmon_f wmon.F90)
 target_link_libraries(wmon_f PUBLIC wmon_c)
 
-add_executable(wmon_test_f wmon_test.F90)
-target_link_libraries(wmon_test_f wmon_f)
-
-#include(CMakePackageConfigHelpers)
-#configure_package_config_file(
-#  ${CMAKE_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
-#    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-#  INSTALL_DESTINATION
-#    ${CMAKE_INSTALL_PREFIX}/${CONFIG_INSTALL_DIR}
-#  PATH_VARS
-#    INCLUDE_INSTALL_DIR
-#    CONFIG_INSTALL_DIR
-#    RUNTIME_INSTALL_DIR
-#    LIB_INSTALL_DIR
-#)
-
-#write_basic_package_version_file(
-#  "${CMAKE_CURRENT_BINARY_DIR}/wmonConfigVersion.cmake"
-#  COMPATIBILITY
-#    SameMajorVersion
-#)
+#disable, not working with pgi
+#add_executable(wmon_test_f wmon_test.F90)
+#target_link_libraries(wmon_test_f wmon_f)
 
 install(TARGETS wmon_f EXPORT wmonfTargets
   PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}
