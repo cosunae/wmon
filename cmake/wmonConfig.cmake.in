@@ -1,6 +1,7 @@
 @PACKAGE_INIT@
 enable_language(CXX)
 set(restclient-cpp_DIR @restclient-cpp_DIR@)
+set(wmon_INCLUDE_DIRS "${restclient-cpp_DIR}/../../../include")
 include(CMakeFindDependencyMacro)
 find_package(restclient-cpp REQUIRED)
 include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake)

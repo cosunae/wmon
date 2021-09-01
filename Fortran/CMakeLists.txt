@@ -10,8 +10,6 @@ set(RUNTIME_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}" )
 set(LIB_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" )
 
 find_package(wmon REQUIRED)
-set(wmon_INCLUDE_DIRS "${restclient-cpp_DIR}/../../../include")
-
 
 add_library(wmon_f wmon.F90)
 target_link_libraries(wmon_f PUBLIC wmon_c)
