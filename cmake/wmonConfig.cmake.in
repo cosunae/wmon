@@ -1,7 +1,18 @@
 @PACKAGE_INIT@
 enable_language(CXX)
 set(restclient-cpp_DIR @restclient-cpp_DIR@)
-set(wmon_INCLUDE_DIRS "${restclient-cpp_DIR}/../../../include")
+# Compute the installation prefix relative to this file.
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+
+
+set(wmon_INCLUDE_DIRS "${restclient-cpp_DIR}/../../../include"
+"${_IMPORT_PREFIX}/include")
+
+set(_IMPORT_PREFIX)
+
 include(CMakeFindDependencyMacro)
 find_package(restclient-cpp REQUIRED)
 include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake)
