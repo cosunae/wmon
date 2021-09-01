@@ -23,7 +23,7 @@ set(wmon_PUBLIC_HEADERS
 
 add_library(wmon wmon.cpp wmon.hpp)
 target_link_libraries(wmon restclient-cpp)
-target_include_directories(wmon PUBLIC ${restclient-cpp_INCLUDE_DIRS} $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> $<INSTALL_INTERFACE:include/wmon>)
+target_include_directories(wmon PUBLIC ${restclient-cpp_INCLUDE_DIRS} $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> $<INSTALL_INTERFACE:include/>)
 
 
 add_executable(wmon_test wmon_test.cpp)
