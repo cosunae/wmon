@@ -24,6 +24,15 @@ subroutine wmon_push_metric(wm, meas, fieldvalpair, timestamp) bind(c)
     integer(kind=c_size_t), value :: timestamp
 end subroutine
 
+subroutine wmon_push_metric_tag(wm, meas, fieldvalpair, timestamp, tag) bind(c)
+    use iso_c_binding
+    type(c_ptr), value :: wm
+    integer(kind=c_signed_char) :: meas(*)
+    integer(kind=c_signed_char) :: fieldvalpair(*)
+    integer(kind=c_size_t), value :: timestamp
+    integer(kind=c_signed_char) :: tag(*)
+end subroutine
+
 subroutine wmon_destroy(wm) bind(c)
     use iso_c_binding
     type(c_ptr), value :: wm

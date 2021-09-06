@@ -20,5 +20,5 @@ public:
 
     bool active() const ;
 
-    void push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp) const;
+    void push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp, std::string jobtags = "") const;
 };

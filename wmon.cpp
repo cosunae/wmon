@@ -33,7 +33,7 @@ wmon::wmon(int loglevel) : loglevel_(loglevel) {
         return active_;
     }
 
-    void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp) const {
+    void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp, std::string jobtags) const {
         if (!active()) return;
 
         // set headers
@@ -44,6 +44,7 @@ wmon::wmon(int loglevel) : loglevel_(loglevel) {
         conn_->SetHeaders(headers);
 
         conn_->AppendHeader("Content-Type", "text/plain");
-        RestClient::Response r = conn_->post("/api/v2/write?org="+org_+"&bucket="+bucket_+"&precision=s", measurement+","+tags_+" "+fieldvalpair+" "+std::to_string(timestamp));
+        std::string tags = tags_ + (jobtags.empty() ? std::string() : jobtags );
+        RestClient::Response r = conn_->post("/api/v2/write?org="+org_+"&bucket="+bucket_+"&precision=s", measurement+","+tags +" "+fieldvalpair+" "+std::to_string(timestamp));
     }
 
