@@ -44,7 +44,7 @@ wmon::wmon(int loglevel) : loglevel_(loglevel) {
         conn_->SetHeaders(headers);
 
         conn_->AppendHeader("Content-Type", "text/plain");
-        std::string tags = tags_ + (jobtags.empty() ? std::string() : jobtags );
+        std::string tags = tags_ + (jobtags.empty() ? std::string() : ","+jobtags );
         RestClient::Response r = conn_->post("/api/v2/write?org="+org_+"&bucket="+bucket_+"&precision=s", measurement+","+tags +" "+fieldvalpair+" "+std::to_string(timestamp));
     }
 
