@@ -12,7 +12,9 @@ class wmon {
     std::string org_;
     std::string bucket_;
     bool active_;
-    
+    std::string msg_;
+    static constexpr int limit_ = 5000;
+
     RestClient::Connection* conn_;
 
 public:
@@ -20,5 +22,5 @@ public:
 
     bool active() const ;
 
-    void push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp, std::string jobtags = "") const;
+    void push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp, std::string jobtags = "") ;
 };
