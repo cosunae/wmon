@@ -1,3 +1,4 @@
+#include <chrono>
 #include "wmon.hpp"
 #include <iostream>
 
@@ -52,11 +53,19 @@ bool wmon::shouldupdate() const
 }
 void wmon::flush_metrics()
 {
-    std::cout << "WMON ................... flush metrics " << std::endl;
-    std::cout << msg_ << std::endl;
+    // std::cout << "WMON ................... flush metrics " << std::endl;
+    // std::cout << msg_ << std::endl;
+
+    auto start = std::chrono::steady_clock::now();
     RestClient::Response r = conn_->post("/api/v2/write?org=" + org_ + "&bucket=" + bucket_ + "&precision=s", msg_);
-    lastupdate_ = std::time(nullptr);
+    auto end = std::chrono::steady_clock::now();
+
+    auto ptime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
     msg_.clear();
+    msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr));
+
+    lastupdate_ = std::time(nullptr);
 }
 void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsigned long timestamp, std::string jobtags)
 {
@@ -74,7 +83,7 @@ void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsign
     std::string tags = tags_ + (jobtags.empty() ? std::string() : "," + jobtags);
     std::string msg = measurement + "," + tags + " " + fieldvalpair + " " + std::to_string(timestamp);
     auto update = shouldupdate();
-    if (!msg.size())
+    if (!msg_.size())
     {
         msg_ = msg;
     }
