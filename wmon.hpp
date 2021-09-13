@@ -15,14 +15,14 @@ class wmon
     std::string bucket_;
     bool active_;
     std::string msg_;
-    static constexpr int limit_ = 5000;
+    const int sizelimit_;
     static constexpr int timelimit_ = 120;
     std::time_t lastupdate_;
 
     RestClient::Connection *conn_;
 
 public:
-    wmon(int loglevel);
+    wmon(int loglevel, int sizelimit = 5000);
     ~wmon();
 
     bool active() const;

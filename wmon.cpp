@@ -13,7 +13,7 @@ namespace detail
     }
 }
 
-wmon::wmon(int loglevel) : loglevel_(loglevel), lastupdate_(std::time(nullptr))
+wmon::wmon(int loglevel, int sizelimit) : loglevel_(loglevel), lastupdate_(std::time(nullptr)), sizelimit_(sizelimit)
 {
     url_ = detail::getenv("WMON_URL");
     token_ = detail::getenv("WMON_TOKEN");
@@ -49,15 +49,16 @@ bool wmon::active() const
 bool wmon::shouldupdate() const
 {
     std::time_t now = std::time(nullptr);
-    return msg_.size() > limit_ || (now - lastupdate_) > timelimit_;
+    return msg_.size() > sizelimit_ || (now - lastupdate_) > timelimit_;
 }
 void wmon::flush_metrics()
 {
-    // std::cout << "WMON ................... flush metrics " << std::endl;
-    // std::cout << msg_ << std::endl;
+    std::cout << "WMON ................... flush metrics " << std::endl;
+    std::cout << msg_ << std::endl;
 
     auto start = std::chrono::steady_clock::now();
     RestClient::Response r = conn_->post("/api/v2/write?org=" + org_ + "&bucket=" + bucket_ + "&precision=s", msg_);
+    std::cout << "Resp : " << r.code << "," << r.body << "," << std::endl;
     auto end = std::chrono::steady_clock::now();
 
     auto ptime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -83,7 +84,7 @@ void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsign
     std::string tags = tags_ + (jobtags.empty() ? std::string() : "," + jobtags);
     std::string msg = measurement + "," + tags + " " + fieldvalpair + " " + std::to_string(timestamp);
     auto update = shouldupdate();
-    if (!msg_.size())
+    if (msg_.empty())
     {
         msg_ = msg;
     }
@@ -91,8 +92,9 @@ void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsign
     {
         msg_ += '\n' + msg;
     }
-    if (update)
+    else
     {
+        msg_ += '\n' + msg;
         flush_metrics();
     }
 }
