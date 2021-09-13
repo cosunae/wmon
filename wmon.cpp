@@ -53,12 +53,12 @@ bool wmon::shouldupdate() const
 }
 void wmon::flush_metrics()
 {
-    std::cout << "WMON ................... flush metrics " << std::endl;
-    std::cout << msg_ << std::endl;
+    // std::cout << "WMON ................... flush metrics " << std::endl;
+    // std::cout << msg_ << std::endl;
 
     auto start = std::chrono::steady_clock::now();
     RestClient::Response r = conn_->post("/api/v2/write?org=" + org_ + "&bucket=" + bucket_ + "&precision=s", msg_);
-    std::cout << "Resp : " << r.code << "," << r.body << "," << std::endl;
+    // std::cout << "Resp : " << r.code << "," << r.body << "," << std::endl;
     auto end = std::chrono::steady_clock::now();
 
     auto ptime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

@@ -14,6 +14,7 @@ class wmon
     std::string org_;
     std::string bucket_;
     bool active_;
+    //TODO fix static allocation
     std::string msg_;
     const int sizelimit_;
     static constexpr int timelimit_ = 120;
@@ -22,7 +23,7 @@ class wmon
     RestClient::Connection *conn_;
 
 public:
-    wmon(int loglevel, int sizelimit = 5000);
+    wmon(int loglevel, int sizelimit = 100000);
     ~wmon();
 
     bool active() const;
