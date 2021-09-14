@@ -23,7 +23,7 @@ class wmon
     RestClient::Connection *conn_;
 
 public:
-    wmon(int loglevel, int sizelimit = 100000);
+    wmon(std::string bucket, int loglevel, int sizelimit = 100000);
     ~wmon();
 
     bool active() const;

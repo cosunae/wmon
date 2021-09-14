@@ -6,7 +6,7 @@
 
 int main()
 {
-  wmon wm(1, 64);
+  wmon wm("test", 1, 64);
 
   while (true)
   {

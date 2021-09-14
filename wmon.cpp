@@ -13,13 +13,12 @@ namespace detail
     }
 }
 
-wmon::wmon(int loglevel, int sizelimit) : loglevel_(loglevel), lastupdate_(std::time(nullptr)), sizelimit_(sizelimit)
+wmon::wmon(std::string bucket, int loglevel, int sizelimit) : bucket_(bucket), loglevel_(loglevel), lastupdate_(std::time(nullptr)), sizelimit_(sizelimit)
 {
     url_ = detail::getenv("WMON_URL");
     token_ = detail::getenv("WMON_TOKEN");
     tags_ = detail::getenv("WMON_TAGS");
     org_ = detail::getenv("WMON_ORG");
-    bucket_ = detail::getenv("WMON_BUCKET");
 
     active_ = !token_.empty() && !url_.empty() && !tags_.empty() && !org_.empty() && !bucket_.empty();
     if (loglevel_ > 0 && !active_)
