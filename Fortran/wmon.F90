@@ -12,8 +12,9 @@ integer(kind=c_size_t) function timestamp() bind(c)
   use iso_c_binding
 end function
 
-type(c_ptr) function wmon_init() bind(c)
+type(c_ptr) function wmon_init(bucket) bind(c)
   use iso_c_binding
+  integer(kind=c_signed_char) :: bucket(*)
 end function
 
 subroutine wmon_push_metric(wm, meas, fieldvalpair, timestamp) bind(c)
