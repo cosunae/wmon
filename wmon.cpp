@@ -68,7 +68,7 @@ void wmon::flush_metrics()
     std::string lastline = msg_.substr(msg_.find_last_of('\n'), msg_.size());
     size_t tstampe = std::stoll(lastline.substr(lastline.find_last_of(' ') + 1, lastline.size()));
 
-    double overhead = ptime * 1000 / (tstampe - tstamps);
+    double overhead = (ptime / 1000.0) / (tstampe - tstamps);
 
     msg_.clear();
     msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr)) + "\n";
