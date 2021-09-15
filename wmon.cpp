@@ -33,6 +33,15 @@ wmon::wmon(std::string bucket, int loglevel, int sizelimit) : bucket_(bucket), l
         return;
     // get a connection object
     conn_ = new RestClient::Connection(url_);
+
+    // set headers
+    RestClient::HeaderFields headers;
+    headers["Accept"] = "application/json";
+    headers["Authorization"] = "Token " + token_;
+
+    conn_->SetHeaders(headers);
+
+    conn_->AppendHeader("Content-Type", "text/plain");
 }
 
 wmon::~wmon()
@@ -107,14 +116,6 @@ void wmon::push_metric(std::string measurement, std::string fieldvalpair, unsign
     if (!active())
         return;
 
-    // set headers
-    RestClient::HeaderFields headers;
-    headers["Accept"] = "application/json";
-    headers["Authorization"] = "Token " + token_;
-
-    conn_->SetHeaders(headers);
-
-    conn_->AppendHeader("Content-Type", "text/plain");
     std::string tags = tags_ + (jobtags.empty() ? std::string() : "," + jobtags);
     std::string msg = measurement + "," + tags + " " + fieldvalpair + " " + std::to_string(timestamp);
     auto update = shouldupdate();
