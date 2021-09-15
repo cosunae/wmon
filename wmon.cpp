@@ -61,6 +61,9 @@ bool wmon::shouldupdate() const
 }
 void wmon::flush_metrics()
 {
+    if (msg_.empty())
+        return;
+
     // std::cout << "WMON ................... flush metrics " << std::endl;
     // std::cout << msg_ << std::endl;
 
@@ -100,9 +103,13 @@ void wmon::flush_metrics()
         double overhead = (ptime / 1000.0) / (tstampe - tstamps);
 
         msg_.clear();
-        msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr)) + "\n";
-        msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " dt=" + std::to_string(tstampe - tstamps) + " " + std::to_string(std::time(nullptr)) + "\n";
-        msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " overhead=" + std::to_string(overhead) + " " + std::to_string(std::time(nullptr));
+        size_t dt = tstampe - tstamps;
+        if (dt > 0)
+        {
+            msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr)) + "\n";
+            msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " dt=" + std::to_string(dt) + " " + std::to_string(std::time(nullptr)) + "\n";
+            msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " overhead=" + std::to_string(overhead) + " " + std::to_string(std::time(nullptr));
+        }
     }
     else
     {
