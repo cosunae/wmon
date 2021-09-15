@@ -63,10 +63,28 @@ void wmon::flush_metrics()
     auto ptime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
     std::string firstline = msg_.substr(0, msg_.find('\n'));
-    size_t tstamps = std::stoll(firstline.substr(firstline.find_last_of(' ') + 1, firstline.size()));
+
+    size_t tstamps;
+    try
+    {
+        tstamps = std::stoll(firstline.substr(firstline.find_last_of(' ') + 1, firstline.size()));
+    }
+    catch (const std::invalid_argument &ia)
+    {
+        std::cerr << "Invalid argument: " << ia.what() << " casting " << firstline << '\n';
+    }
 
     std::string lastline = msg_.substr(msg_.find_last_of('\n'), msg_.size());
-    size_t tstampe = std::stoll(lastline.substr(lastline.find_last_of(' ') + 1, lastline.size()));
+
+    size_t tstampe;
+    try
+    {
+        tstampe = std::stoll(lastline.substr(lastline.find_last_of(' ') + 1, lastline.size()));
+    }
+    catch (const std::invalid_argument &ia)
+    {
+        std::cerr << "Invalid argument: " << ia.what() << " casting " << lastline << '\n';
+    }
 
     double overhead = (ptime / 1000.0) / (tstampe - tstamps);
 
