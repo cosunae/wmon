@@ -62,8 +62,18 @@ void wmon::flush_metrics()
 
     auto ptime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
+    std::string firstline = msg_.substr(0, msg_.find('\n'));
+    size_t tstamps = std::stoll(firstline.substr(firstline.find_last_of(' ') + 1, firstline.size()));
+
+    std::string lastline = msg_.substr(msg_.find_last_of('\n'), msg_.size());
+    size_t tstampe = std::stoll(lastline.substr(lastline.find_last_of(' ') + 1, lastline.size()));
+
+    double overhead = ptime * 1000 / (tstampe - tstamps);
+
     msg_.clear();
-    msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr));
+    msg_ = "wmon,timelimit=" + std::to_string(timelimit_) + " push_time=" + std::to_string(ptime) + " " + std::to_string(std::time(nullptr)) + "\n";
+    msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " dt=" + std::to_string(tstampe - tstamps) + " " + std::to_string(std::time(nullptr)) + "\n";
+    msg_ += "wmon,timelimit=" + std::to_string(timelimit_) + " overhead=" + std::to_string(overhead) + " " + std::to_string(std::time(nullptr));
 
     lastupdate_ = std::time(nullptr);
 }
